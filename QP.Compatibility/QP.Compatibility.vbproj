@@ -6,7 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4BF60016-1685-49BD-A96E-6A07B2DEA771}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>QP</RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <AssemblyName>QP.Compatibility</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
@@ -65,7 +66,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Array.vb" />
-    <Compile Include="DateTime.vb" />
     <Compile Include="Dos.vb" />
     <Compile Include="Ems.vb" />
     <Compile Include="Financial.vb" />
