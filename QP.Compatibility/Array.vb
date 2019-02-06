@@ -16,9 +16,9 @@ Namespace QP
     End Sub
 
     Public Shared Sub DeleteStr(ByRef array$(), element%, numEls%)
-      'For X = element To element + numEls
-      '  QB.SWAP(array(X), array(X + 1))
-      'Next
+      For X = element To element + numEls
+        QB.SWAP(array(X), array(X + 1))
+      Next
     End Sub
 
     Public Shared Sub DeleteT(ByRef a%(), element%, elSize%, numEls%)
@@ -26,7 +26,7 @@ Namespace QP
     End Sub
 
     Public Shared Sub DimBits(ByRef array$, numEls%)
-
+      array = New String(Chr(0), numEls \ 8 + 1)
     End Sub
 
     Public Shared Sub Fill2(ByRef ay%(), start%, value%, numEls%)
@@ -88,7 +88,21 @@ Namespace QP
     End Function
 
     Public Shared Function GetBit%(array$, element%)
-      Return 0
+
+      ' returns a -1 if element is set (not a 1)
+      Dim index = (element \ 8)
+
+      If array.Length < index + 1 Then
+        Stop
+      End If
+
+      Dim v = Asc(array(index))
+
+      Dim mask = 1 << (element Mod 8)
+      Return CInt((v And mask) <> 0)
+
+      'Return (v And ((2 ^ (element Mod 8)) - 1) <> 0)
+
     End Function
 
     Public Shared Function IMaxD%(a#(), start%, numEls%)
@@ -135,11 +149,11 @@ Namespace QP
 
     End Sub
 
-    Public Shared Sub InsertStr(ByRef Array$(), Element%, Ins$, NumEls%)
-      'For X = (Element% + NumEls%) To (Element% + 1) Step -1
-      '  QB.SWAP(Array$(X), Array$(X - 1))
-      'Next
-      'QB.SWAP(Array$(Element%), Ins$)
+    Public Shared Sub InsertStr(ByRef array$(), element%, ins$, numEls%)
+      For x = (element + numEls) To (element + 1) Step -1
+        QB.SWAP(array(x), array(x - 1))
+      Next
+      QB.SWAP(array(element), ins)
     End Sub
 
     Public Shared Sub InsertT(a() As Object, element%, elSize%, numEls%)
@@ -234,7 +248,41 @@ Namespace QP
 
     End Sub
 
-    Public Shared Sub SetBit(Array$, Element%, Bit%)
+    Public Shared Sub SetBit(ByRef array$, element%, bit%)
+
+      ' bit = 0, clear the bit
+      ' bit <> 0, set the bit
+
+      ' Each byte represents 8 bits...
+
+      Dim index = (element \ 8)
+
+      If array.Length < index + 1 Then
+        Return
+      End If
+
+      Dim v = Asc(array(index))
+
+      Dim mask = 1 << (element Mod 8)
+
+      If bit = 0 Then
+        v = v And mask
+      Else
+        v = v Or mask
+      End If
+
+      Dim l = ""
+      Dim r = ""
+
+      If index > 0 Then
+        l = array.Substring(0, index)
+      End If
+
+      If index + 1 < array.Length Then
+        r = array.Substring(index + 1)
+      End If
+
+      array = l & Chr(v) & r
 
     End Sub
 
@@ -258,19 +306,82 @@ Namespace QP
     '  Return 0
     'End Function
 
-    Public Shared Sub SortStr(a$(), start%, numEls%, dir%)
+    Public Shared Sub SortStr(ByRef arry$(), start%, numEls%, dir%)
+
+      ' SortStr will sort all or just a portion of a conventional (not fixed-length) string array into either ascending or descending order. 
+      ' SortStr2 is nearly identical, but sorting is performed without regard to capitalization.
+
+      Dim s$(numEls - 1)
+
+      Dim index = 0
+
+      For index = start To start + numEls - 1
+        s$(index - 1) = arry$(index)
+      Next
+
+      Dim result$()
+
+      If dir = 0 Then
+        result = (From p In s$ Order By p Ascending).ToArray()
+      Else
+        result = (From p In s$ Order By p Descending).ToArray()
+      End If
+
+      index = start
+      For Each value In result.ToList
+        arry(index) = value
+        index += 1
+      Next
 
     End Sub
 
-    Public Shared Sub SortStr2(a$(), start%, numEls%, dir%)
+    Public Shared Sub SortStr2(ByRef arry$(), start%, numEls%, dir%)
+
+      ' SortStr will sort all or just a portion of a conventional (not fixed-length) string array into either ascending or descending order. 
+      ' SortStr2 is nearly identical, but sorting is performed without regard to capitalization.
+
+      Dim s$(numEls - 1)
+
+      Dim index = 0
+
+      For index = start To start + numEls - 1
+        s$(index - 1) = arry$(index)
+      Next
+
+      Dim result$()
+
+      If dir = 0 Then
+        result = (From p In s$ Order By p.ToLower Ascending).ToArray()
+      Else
+        result = (From p In s$ Order By p.ToLower Descending).ToArray()
+      End If
+
+      index = start
+      For Each value In result.ToList
+        arry(index) = value
+        index += 1
+      Next
 
     End Sub
 
-    Public Shared Sub SortT(a() As Object, start%, numEls%, dir%, elSize%, memberOffset%, memberSize%)
+    Public Shared Sub SortT(ByRef arry$(), start%, numEls%, dir%, elSize%, memberOffset%, memberSize%)
+
+      ' SortT will sort all or part of a fixed-length string or TYPE array into either ascending or descending order. 
+
+      Dim result = From p In arry Order By p Ascending
+
+      ReDim arry(result.Count - 1)
+      Dim index = 0 '1
+      For Each value In result.ToList
+        arry(index) = value
+        index += 1
+      Next
 
     End Sub
 
     Public Shared Sub SortT2(a() As Object, start%, numEls%, dir%, elSize%, memberOffset%, memberSize%)
+
+      ' SortT2 is nearly identical, but when considering the string component of a TYPE array, sorting is performed without regard to capitalization. 
 
     End Sub
 

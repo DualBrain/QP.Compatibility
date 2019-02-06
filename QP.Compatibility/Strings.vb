@@ -10,7 +10,16 @@ Namespace QP
     End Sub
 
     Public Shared Function ASCII%(any$)
-      Return 0
+
+      ' ASCII obtains the ASCII value for a string exactly as BASIC's ASC function does, but it will not cause an "Illegal Function Call" error if the string is null. 
+      ' Any$ Is Any String, And A receives the ASCII value Of its first character. If the String Is null, ASCII instead returns -1
+
+      If String.IsNullOrEmpty(any$) Then
+        Return -1
+      Else
+        Return Asc(any$.Substring(0, 1))
+      End If
+
     End Function
 
     Public Shared Function Blanks%(work$)
@@ -21,11 +30,19 @@ Namespace QP
       Return Nothing
     End Function
 
-    Public Shared Sub Encrypt(x$, password$)
+    Public Shared Sub Encrypt(ByRef value$, password$)
+
+      Dim L = Len(password)
+      For X = 1 To Len(value)
+        Dim Pass = Asc(Mid(password, (X Mod L) - L * If((X Mod L) = 0, 1, 0), 1))
+        MID$(value, X, 1) = Chr(Asc(Mid(value, X, 1)) Xor Pass)
+      Next
 
     End Sub
 
-    Public Shared Sub Encrypt2(x$, password$)
+    Public Shared Sub Encrypt2(ByRef value$, password$)
+
+      ' Encrypt2 is nearly identical, except the characters in the password are altered as the encryption progresses. 
 
     End Sub
 
@@ -138,22 +155,22 @@ Namespace QP
     End Function
 
     Public Shared Function QPLen%(work$)
-      Return 0
+      Return Len(work)
     End Function
 
     Public Shared Function QPSadd%(work$)
       Return 0
     End Function
 
-    Public Shared Function QPStrI$(intVar%)
-      Return Nothing
+    Public Shared Function QPStrI$(Number%)
+      Return CStr(Number%).Trim
     End Function
 
     Public Shared Function QPStrL$(longInt&)
       Return Nothing
     End Function
 
-    Public Shared Function QPTrim$(text As String)
+    Public Shared Function QPTrim$(text$)
 
       If text Is Nothing Then Return Nothing
 
@@ -184,11 +201,15 @@ Namespace QP
     End Function
 
     Public Shared Function QPValI%(value$)
-      Return 0
+      ' QPValI And QPValL serve the same purpose as BASIC's VALO function, but they are considerably faster. QPValI is intended for use with strings whose values range from -32768 to 32767, and QPValL is meant for use with values that fall within the range accommodated by long integers. 
+      ' X receives the value Of the specified strings. Of course, you would probably use a String variable rather than a quoted constant, And the examples are shown this way merely for clarity
+      Return CInt(Val(value$))
     End Function
 
     Public Shared Function QPValL&(value$)
-      Return 0
+      ' QPValI And QPValL serve the same purpose as BASIC's VALO function, but they are considerably faster. QPValI is intended for use with strings whose values range from -32768 to 32767, and QPValL is meant for use with values that fall within the range accommodated by long integers. 
+      ' X receives the value Of the specified strings. Of course, you would probably use a String variable rather than a quoted constant, And the examples are shown this way merely for clarity
+      Return CLng(Val(value$))
     End Function
 
     Public Shared Sub RemCtrl(x$, replace$)

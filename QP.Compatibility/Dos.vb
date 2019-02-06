@@ -10,11 +10,18 @@ Namespace QP
     End Sub
 
     Public Shared Sub CDir(path As String)
-      IO.Directory.SetCurrentDirectory(path)
+      Try
+        IO.Directory.SetCurrentDirectory(path)
+      Catch ex As io.IOException
+        'TODO: Depending on the error, need to set DOSError and/or WhichError.
+      End Try
     End Sub
 
     Public Shared Sub ClipFile(filename$, newLength&)
-
+      'TODO: The following code needs to be tested/verified as to whether or not it actually works...
+      Using fs = New IO.FileStream(filename$, IO.FileMode.Open)
+        fs.SetLength(newLength&)
+      End Using
     End Sub
 
     Public Shared Function DCount%(path$)
@@ -22,61 +29,128 @@ Namespace QP
       Return IO.Directory.GetFiles(path$).Count
     End Function
 
-    Public Shared Sub DiskInfo(drive$, byte%, sectors%, freeClusters&, totalClusters&)
-
+    Public Shared Sub DiskInfo(drive$, ByRef byte%, sectors%, freeClusters&, totalClusters&)
+      If String.IsNullOrEmpty(drive$) Then
+        drive$ = IO.Directory.GetCurrentDirectory.Substring(0, 1)
+      End If
     End Sub
 
     Public Shared Function DiskRoom&(drive$)
-      Return 0
+      If String.IsNullOrEmpty(drive$) Then
+        drive$ = IO.Directory.GetCurrentDirectory.Substring(0, 1)
+      End If
+      Try
+        Dim d = New IO.DriveInfo(drive$)
+        Return d.AvailableFreeSpace
+      Catch ex As Exception
+        m_dosError = -1
+        Return 0
+      End Try
     End Function
 
     Public Shared Function DiskSize&(drive$)
-      Return 0
+      If String.IsNullOrEmpty(drive$) Then
+        drive$ = IO.Directory.GetCurrentDirectory.Substring(0, 1)
+      End If
+      Try
+        Dim d = New IO.DriveInfo(drive$)
+        Return d.TotalSize
+      Catch ex As Exception
+        m_dosError = -1
+        Return 0
+      End Try
     End Function
 
+    Private Shared m_dosError As Integer = 0
+
     Public Shared Function DOSError%()
-      Return 0
+
+      ' DOSError reports if an error occurred during the last call to a QuickPak Professional DOS routine. 
+      ' DOSError% returns O if there was no error, or -1 if there was.
+      ' All of the QuickPak Professional routines assign a value to the DOSError and WhichError functions to indicate their success or failure. Rather than requiring you to set up a separate error handling procedure and use ON ERROR, you can simply query these functions after performing any QuickPak Professional DOS operation. DOSError is discussed in the section entitled "Eliminating ON ERROR". 
+      ' Also see the complementary function WhichError. 
+
+      Return m_dosError
+
     End Function
 
     Public Shared Function DOSVer%()
-      Return 620
+
+      ' DOSVer returns the version of DOS that is presently running on the host PC.
+      '
+      '   Version! = DOSVer% / 100 
+      '   Major= DOSVer% \ 100 
+      '   Minor= DOSVer% MOD 100 
+      ' 
+
+      'NOTE: https://docs.microsoft.com/en-us/windows/desktop/SysInfo/targeting-your-application-at-windows-8-1
+
+      Dim v = Environment.OSVersion.Version
+      Return (v.Major * 100) + v.Minor
+
     End Function
 
     Public Shared Function ErrorMsg$(errorNumber%)
+
+      ' ErrorMsg returns an appropriate message given any of the BASIC error numbers for a DOS service. 
+      ' ErrorNumber% is a valid BASIC error number for a DOS operation.
+      ' Regardless of how you intend to handle DOS and other errors in your programs, at some point you will probably need to print a message to indicate what went wrong. ErrorMsg provides an easy way to add the standard BASIC error messages without requiring ERROR, or the wasted string space that results from storing the messages as text constants or DATA statements. 
+      ' The text for each message is kept in a table in the code segment, and is organized such that it may be easily modified or expanded. This is shown in the ErrorMsg assembler source code. 
+      ' We have purposely omitted the "normal" BASIC errors such as Illegal Function Call and Overflow, though these could be added by modifying the assembler source code. However, two BASIC error messages that have been included are "Out of string space" and "Out of memory", which are used in the FastLoad and FastSave routines described elsewhere. 
+
       Return Nothing
+
     End Function
 
     Public Shared Function EXEName$()
+      ' ExeName returns the full name of the currently executing program, including the drive, path, and file name. 
       Return Reflection.Assembly.GetExecutingAssembly().Location
     End Function
 
-    Public Shared Function Exist(filename As String) As Boolean
+    Public Shared Function Exist(filename As String) As Integer
+      ' Exist will quickly determine the presence of a file.
       If filename.StartsWith("\") Then
+        ' If the filename starts with a backslashes in the specified filename, use the current directory.
         filename = IO.Path.Combine(IO.Directory.GetCurrentDirectory(), filename.Substring(1))
       ElseIf Not filename.Contains("\") Then
+        ' If there aren't any backslashes in the specified filename, use the current directory.
         filename = IO.Path.Combine(IO.Directory.GetCurrentDirectory(), filename)
       End If
-      Return IO.File.Exists(filename)
+      If IO.File.Exists(filename) Then
+        Return -1
+      Else
+        Return 0
+      End If
     End Function
+
+    Private Shared m_fastLoad As IEnumerable(Of String)
 
     Public Shared Function FastLoadInt%(filename$)
-      Return 0
+      m_fastLoad = IO.File.ReadLines(filename$)
+      Return m_fastLoad.Count
     End Function
 
-    Public Shared Sub FastLoadStr(a$())
-
+    Public Shared Sub FastLoadStr(ByRef a$())
+      a$ = m_fastLoad.ToArray()
     End Sub
 
     Public Shared Sub FastSave(filename$, text$())
-
+      IO.File.WriteAllLines(filename$, text$)
     End Sub
 
     Public Shared Sub FClose(handle As Integer)
       FileSystem.FileClose(handle)
     End Sub
 
-    Public Shared Sub FCopy(source$, dest$, buffer$, errCode%)
-
+    Public Shared Sub FCopy(source$, dest$, buffer$, ByRef errCode%)
+      Try
+        IO.File.Copy(source$, dest$)
+      Catch ex As Exception
+        m_dosError = -1
+        errCode% = 1 ' problem with source.
+        errCode% = 2 ' problem with destination
+        'TODO: Set WhichError%
+      End Try
     End Sub
 
     Public Shared Function FCount%(path$)
@@ -100,14 +174,14 @@ Namespace QP
       End If
     End Function
 
-    Public Shared Sub FCreate(filename As String)
+    Public Shared Sub FCreate(filename$)
       Dim fileNumber = FileSystem.FreeFile
-      FileSystem.FileOpen(fileNumber, filename, OpenMode.Output, OpenAccess.Default, OpenShare.Default)
+      FileSystem.FileOpen(fileNumber, filename$, OpenMode.Output, OpenAccess.Default, OpenShare.Default)
       FileSystem.FileClose(fileNumber)
     End Sub
 
     Public Shared Function FEof%(handle%)
-      Return 0
+      Return If(FileSystem.EOF(handle%), -1, 0)
     End Function
 
     Public Shared Sub FFlush(handle%)
@@ -152,7 +226,7 @@ Namespace QP
     End Function
 
     Public Shared Sub FileCopy(source$, dest$, copied%, errCode%)
-      IO.File.Copy(source, dest)
+      IO.File.Copy(source$, dest$)
     End Sub
 
     Public Shared Sub FileCrypt(filename$, password$)
@@ -258,7 +332,6 @@ Namespace QP
     End Function
 
     Public Shared Sub FPut(handle As Integer, source As String)
-      ' QuickPAK
       Try
         FileSystem.FilePut(handle, source)
       Catch ex As Exception
@@ -295,7 +368,8 @@ Namespace QP
     End Sub
 
     Public Shared Sub FStamp(filename$, newTime$, newDate$)
-
+      ' FStamp creates a new date and time for a specified file.
+      ' AKA Touch...
     End Sub
 
     Public Shared Function FullName$(partName$)
@@ -307,7 +381,6 @@ Namespace QP
     End Function
 
     Public Shared Function GetDir(drive As String) As String
-      ' QuickPAK
       Return IO.Path.GetFullPath(My.Application.Info.DirectoryPath).Substring(2)
     End Function
 
@@ -316,16 +389,14 @@ Namespace QP
     End Function
 
     Public Shared Function GetDrive() As Integer
-      ' QuickPAK
       Return Asc(IO.Path.GetPathRoot(My.Application.Info.DirectoryPath).Substring(0, 1))
     End Function
 
-    Public Shared Function GetVol$(Drive$)
-      Return Dir("C:\", FileAttribute.Volume)
+    Public Shared Function GetVol$(drive$)
+      Return Dir($"{drive$}:\", FileAttribute.Volume)
     End Function
 
     Public Shared Function GoodDrive(drive As String) As Boolean
-      ' QuickPAK
       If IO.Directory.Exists($"{drive}:\") Then
         Return True
       Else
@@ -447,11 +518,28 @@ Namespace QP
 
     End Sub
 
-    Public Shared Sub ReadFileT(spec$, array() As Object)
+    Public Shared Sub ReadFileT(spec$, ByRef arry$())
+
+      ' ReadFileT obtains a list of file names from disk, and loads them into a fixed-length string array in one operation.
+
+      Dim directory As String = spec
+      Dim pattern As String = Nothing
+      If (directory.Contains("*") OrElse directory.Contains("?")) Then
+        pattern = directory.Substring(directory.LastIndexOf("\") + 1)
+        directory = directory.Substring(0, directory.LastIndexOf("\"))
+      End If
+
+      Dim result = IO.Directory.GetFiles(directory, pattern)
+      ReDim arry(result.Count)
+      Dim index = 1
+      For Each value In result
+        arry(index) = IO.Path.GetFileName(value).PadRight(12)
+        index += 1
+      Next
 
     End Sub
 
-    Public Shared Sub REadFileX(spec$, dirSize&, array() As Object)
+    Public Shared Sub ReadFileX(spec$, dirSize&, array() As Object)
 
     End Sub
 
@@ -484,7 +572,6 @@ Namespace QP
     End Sub
 
     Public Shared Sub SetDrive(drive As String)
-      ' QuickPAK
       IO.Directory.SetCurrentDirectory(drive & ":")
     End Sub
 
@@ -524,7 +611,8 @@ Namespace QP
     End Sub
 
     Public Shared Function Valid%(filename$)
-      Return 0
+      ' Valid examines a string to see if it could be a valid file name.
+      Return -1
     End Function
 
     Public Shared Function WhichError%()
@@ -540,7 +628,11 @@ Namespace QP
     End Sub
 
     Public Shared Function WriteTest%(drive$)
-      Return 0
+
+      ' Write Test will report whether a specified disk drive is ready for writing.
+
+      Return -1
+
     End Function
 
   End Class

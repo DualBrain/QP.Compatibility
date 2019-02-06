@@ -2,6 +2,8 @@
 Option Strict On
 Option Infer On
 
+Imports QP.Video
+
 Namespace QP
 
   Public NotInheritable Class Miscellaneous
@@ -31,9 +33,34 @@ Namespace QP
 
     Public Shared Sub Chime(number%)
 
+      ' Chime provides five different types of beep tones, and five short attention-getting trill sounds. 
+
+      ' Call Chime(Number%)
+
+      ' Number% Is between 1 And 10
+
     End Sub
 
-    Public Shared Sub Clock(row%, column%, colr%, mode%)
+    Public Shared Sub Clock(row%, col%, colr%, mode%)
+
+      Static t As Timers.Timer
+      Static r%, c%, co%
+
+      If mode% = 1 Then
+        If t Is Nothing Then
+          t = New Timers.Timer(250)
+          r = row%
+          c = col%
+          co% = colr%
+          AddHandler t.Elapsed, Sub() QPrintRC(Now.ToLongTimeString(), r%, c%, co%)
+          t.Enabled = True
+        End If
+      Else
+        If t IsNot Nothing Then
+          t.Enabled = False
+          t = Nothing
+        End If
+      End If
 
     End Sub
 
@@ -53,8 +80,24 @@ Namespace QP
       Return 0
     End Function
 
-    Public Shared Function Date2Num%(d$)
-      Return 0
+    Public Shared Function Date2Num&(value$)
+      Dim pivot = New Date(1979, 12, 31)
+      Dim d As Date
+      Try
+        If value?.Length = 6 Then
+          value = $"{value.Substring(0, 2)}/{value.Substring(2, 2)}/{value.Substring(4, 2)}"
+        ElseIf value?.Length = 8 Then
+          value = $"{value.Substring(0, 2)}/{value.Substring(2, 2)}/{value.Substring(4, 4)}"
+        End If
+        d = CDate(value)
+      Catch ex As Exception
+        Return -32768
+      End Try
+      If d >= #1/1/1900# AndAlso d <= #11/17/2065# Then
+        Return DateDiff(DateInterval.Day, pivot, d)
+      Else
+        Return -32768
+      End If
     End Function
 
     Public Shared Function DayName$(day%)
@@ -107,14 +150,19 @@ Namespace QP
     End Function
 
     Public Shared Function GetCPU%()
-      Return 0
+      Return 486
     End Function
 
     Public Shared Function GetDS%()
       Return 0
     End Function
 
-    Public Shared Sub GetEquip(floppies%, parallels%, serials%)
+    Public Shared Sub GetEquip(ByRef floppies%, ByRef parallels%, ByRef serials%)
+
+      'GetEquip returns several items from the equipment list kept in the low-memory area of a PC. 
+      floppies = 1
+      parallels = 0
+      serials = 0
 
     End Sub
 
@@ -147,19 +195,23 @@ Namespace QP
     End Function
 
     Public Shared Function Num2Date$(day%)
-      Return Nothing
+      Return DateAdd(DateInterval.Day, day%, New Date(1979, 12, 31)).ToString("MM-dd-yyyy")
     End Function
 
     Public Shared Function Num2Day%(d%)
-      Return 0
+      Dim value = CDate(Num2Date(d%))
+      Return value.DayOfWeek
     End Function
 
-    Public Shared Function Num2Time$(time&)
-      Return Nothing
+    Public Shared Function Num2Time$(time%)
+      Dim z = New TimeSpan(0, 0, time%)
+      Return z.ToString
     End Function
 
     Public Shared Sub Pause(ticks%)
-
+      Dim dv = 1 / 18 'NOTE: ticks represents 1/18th of a second.
+      Dim ms = CInt(1000 * (ticks * dv))
+      Threading.Thread.Sleep(ms)
     End Sub
 
     Public Shared Sub Pause2(microseconds%)
@@ -171,7 +223,7 @@ Namespace QP
     End Sub
 
     Public Shared Function PDQTimer&()
-      Return 0
+      Return QB.QBTimer()
     End Function
 
     Public Shared Function Peek1%(segment%, address%)
@@ -199,7 +251,12 @@ Namespace QP
     End Function
 
     Public Shared Function PRNReady%(lptNumber%)
-      Return 0
+      Select Case lptNumber
+        Case 1, 2, 3
+          Return 0
+        Case Else
+          Return 0
+      End Select
     End Function
 
     Public Shared Sub PSwap()
@@ -235,7 +292,14 @@ Namespace QP
     End Function
 
     Public Shared Sub Reboot()
-
+      Dim psi = New System.Diagnostics.ProcessStartInfo("shutdown", "/r /t 0") With {
+      .RedirectStandardInput = True,
+      .RedirectStandardOutput = True,
+      .RedirectStandardError = True,
+      .UseShellExecute = False,
+      .CreateNoWindow = True,
+      .WindowStyle = Diagnostics.ProcessWindowStyle.Hidden}
+      Dim console = Process.Start(psi)
     End Sub
 
     Public Shared Sub ShiftIL(intVar%, numBits%)
@@ -319,7 +383,8 @@ Namespace QP
     End Sub
 
     Public Shared Function Time2Num&(t$)
-      Return 0
+      Dim d = CDate(t$)
+      Return DateDiff(DateInterval.Second, Date.MinValue, d)
     End Function
 
     Public Shared Function Times2%(number%)

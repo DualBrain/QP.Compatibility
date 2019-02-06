@@ -57,8 +57,18 @@ Namespace QP
 
     End Sub
 
-    Public Shared Function MGetKey%(row%, column%)
-      Return 0
+    Public Shared Function MGetKey%(ByRef row%, ByRef column%)
+      While QB.INKEY <> "" : End While
+      Do
+        Dim A$ = QB.INKEY
+        If A$ <> "" Then
+          If Len(A$) > 1 Then
+            Return -Asc(A$(1))
+          Else
+            Return Asc(A$(0))
+          End If
+        End If
+      Loop
     End Function
 
     Public Shared Sub MMenuVert(array$, selection%, start%, scanCode%, normalColor%, highlight%, numRows%, row%, column%)
