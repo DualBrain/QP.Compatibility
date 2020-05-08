@@ -2,7 +2,7 @@
 Option Strict On
 Option Infer On
 
-Namespace QP
+Namespace Global.QP
 
   Public NotInheritable Class Financial
 

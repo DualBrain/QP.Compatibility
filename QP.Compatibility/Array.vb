@@ -2,80 +2,82 @@
 Option Strict On
 Option Infer On
 
+Imports QB.Core
+
 Imports QP.Strings
 
-Namespace QP
+Namespace Global.QP
 
   Public NotInheritable Class Array
 
     Private Sub New()
     End Sub
 
-    Public Shared Sub Addlnt(ByRef a%(), start%, value%, numEls%)
+    'Public Shared Sub Addlnt(ByRef a%(), start%, value%, numEls%)
 
-    End Sub
+    'End Sub
 
     Public Shared Sub DeleteStr(ByRef array$(), element%, numEls%)
       For X = element To element + numEls
-        QB.SWAP(array(X), array(X + 1))
+        SWAP(array(X), array(X + 1))
       Next
     End Sub
 
-    Public Shared Sub DeleteT(ByRef a%(), element%, elSize%, numEls%)
+    'Public Shared Sub DeleteT(ByRef a%(), element%, elSize%, numEls%)
 
-    End Sub
+    'End Sub
 
     Public Shared Sub DimBits(ByRef array$, numEls%)
       array = New String(Chr(0), numEls \ 8 + 1)
     End Sub
 
-    Public Shared Sub Fill2(ByRef ay%(), start%, value%, numEls%)
+    'Public Shared Sub Fill2(ByRef ay%(), start%, value%, numEls%)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub Fill4(ByRef a() As Single, start%, value%, numEls%)
+    'Public Shared Sub Fill4(ByRef a() As Single, start%, value%, numEls%)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub Fill8(ByRef a() As Double, start%, value%, numEls%)
+    'Public Shared Sub Fill8(ByRef a() As Double, start%, value%, numEls%)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub Find(a$(), start%, ByRef numEls%, search$)
+    'Public Shared Sub Find(a$(), start%, ByRef numEls%, search$)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub Find2(a$(), start%, ByRef numEls%, search$)
+    'Public Shared Sub Find2(a$(), start%, ByRef numEls%, search$)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub FindB(a$(), ByRef curEl%, search$)
+    'Public Shared Sub FindB(a$(), ByRef curEl%, search$)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub FindB2(a$(), ByRef curEl%, search$)
+    'Public Shared Sub FindB2(a$(), ByRef curEl%, search$)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub FindExact(a$(), start%, numEls%, search$)
+    'Public Shared Sub FindExact(a$(), start%, numEls%, search$)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub FindT(a$(), start%, elSize%, numEls%, search$)
+    'Public Shared Sub FindT(a$(), start%, elSize%, numEls%, search$)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub FindT2(a$(), start%, elSize%, numEls%, search$)
+    'Public Shared Sub FindT2(a$(), start%, elSize%, numEls%, search$)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub FindTB(a$(), elSize%, curEl%, search$)
+    'Public Shared Sub FindTB(a$(), elSize%, curEl%, search$)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub FindTB2(a$(), elSize%, curEl%, search$)
+    'Public Shared Sub FindTB2(a$(), elSize%, curEl%, search$)
 
-    End Sub
+    'End Sub
 
     Public Shared Function FindLast%(Arry$(), NumEls%)
       ' FindLast scans a conventional (not fixed-length) string array backwards looking for the last non-blank element. 
@@ -105,148 +107,148 @@ Namespace QP
 
     End Function
 
-    Public Shared Function IMaxD%(a#(), start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function IMaxD%(a#(), start%, numEls%)
+    '  Return 0
+    'End Function
 
-    Public Shared Function IMaxI%(a() As Short, start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function IMaxI%(a() As Short, start%, numEls%)
+    '  Return 0
+    'End Function
 
-    Public Shared Function IMaxL%(a() As Integer, start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function IMaxL%(a() As Integer, start%, numEls%)
+    '  Return 0
+    'End Function
 
-    Public Shared Function IMaxS%(a() As Single, start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function IMaxS%(a() As Single, start%, numEls%)
+    '  Return 0
+    'End Function
 
     'Public Shared Function IMaxC%(a() As System.Currency, start%, numEls%)
     '  Return 0
     'End Function
 
-    Public Shared Function IMindD%(a#(), start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function IMindD%(a#(), start%, numEls%)
+    '  Return 0
+    'End Function
 
-    Public Shared Function IMindI%(a() As Short, start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function IMindI%(a() As Short, start%, numEls%)
+    '  Return 0
+    'End Function
 
-    Public Shared Function IMindL%(a() As Integer, start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function IMindL%(a() As Integer, start%, numEls%)
+    '  Return 0
+    'End Function
 
-    Public Shared Function IMindI%(a() As Single, start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function IMindI%(a() As Single, start%, numEls%)
+    '  Return 0
+    'End Function
 
     'Public Shared Function IMindI%(a() As Currency, start%, numEls%)
     '  Return 0
     'End Function
 
-    Public Shared Sub InitInt(a%(), start%, value%, numEls%)
+    'Public Shared Sub InitInt(a%(), start%, value%, numEls%)
 
-    End Sub
+    'End Sub
 
     Public Shared Sub InsertStr(ByRef array$(), element%, ins$, numEls%)
       For x = (element + numEls) To (element + 1) Step -1
-        QB.SWAP(array(x), array(x - 1))
+        SWAP(array(x), array(x - 1))
       Next
-      QB.SWAP(array(element), ins)
+      SWAP(array(element), ins)
     End Sub
 
-    Public Shared Sub InsertT(a() As Object, element%, elSize%, numEls%)
+    'Public Shared Sub InsertT(a() As Object, element%, elSize%, numEls%)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub ISortD(a() As Double, start%, ndx%(), numEls%, dir%)
+    'Public Shared Sub ISortD(a() As Double, start%, ndx%(), numEls%, dir%)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub ISortI(a() As Short, start%, ndx%(), numEls%, dir%)
+    'Public Shared Sub ISortI(a() As Short, start%, ndx%(), numEls%, dir%)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub ISortL(a() As Integer, start%, ndx%(), numEls%, dir%)
+    'Public Shared Sub ISortL(a() As Integer, start%, ndx%(), numEls%, dir%)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub ISortS(a() As Single, start%, ndx%(), numEls%, dir%)
+    'Public Shared Sub ISortS(a() As Single, start%, ndx%(), numEls%, dir%)
 
-    End Sub
+    'End Sub
 
     'Public Shared Sub ISortC(a() As Currency, start%, ndx%(), numEls%, dir%)
 
     'End Sub
 
-    Public Shared Sub SortStr(a$(), Start%, Ndx%(), NumEls%, Dir%)
+    'Public Shared Sub SortStr(a$(), Start%, Ndx%(), NumEls%, Dir%)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub SortStr2(a$(), Start%, Ndx%(), NumEls%, Dir%)
+    'Public Shared Sub SortStr2(a$(), Start%, Ndx%(), NumEls%, Dir%)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub ISortT(a() As Object, start%, ByRef ndx%(), numEls%, dir%, elSize%, member0ffset%, memberSize%)
+    'Public Shared Sub ISortT(a() As Object, start%, ByRef ndx%(), numEls%, dir%, elSize%, member0ffset%, memberSize%)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub ISortT2(a() As Object, start%, ByRef ndx%(), numEls%, dir%, elSize%, member0ffset%, memberSize%)
+    'Public Shared Sub ISortT2(a() As Object, start%, ByRef ndx%(), numEls%, dir%, elSize%, member0ffset%, memberSize%)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub KeySort(a() As Object, start%, elSize%, numEls%, table%(,), numKeys%)
+    'Public Shared Sub KeySort(a() As Object, start%, elSize%, numEls%, table%(,), numKeys%)
 
-    End Sub
+    'End Sub
 
-    Public Shared Function MaxD%(a() As Double, start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function MaxD%(a() As Double, start%, numEls%)
+    '  Return 0
+    'End Function
 
-    Public Shared Function MaxI%(a() As Short, start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function MaxI%(a() As Short, start%, numEls%)
+    '  Return 0
+    'End Function
 
-    Public Shared Function MaxL%(a() As Integer, start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function MaxL%(a() As Integer, start%, numEls%)
+    '  Return 0
+    'End Function
 
-    Public Shared Function MaxS%(a() As Single, start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function MaxS%(a() As Single, start%, numEls%)
+    '  Return 0
+    'End Function
 
     'Public Shared Function MaxC%(a() As Currency, start%, numEls%)
     '  Return 0
     'End Function
 
-    Public Shared Function MinD%(a() As Double, start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function MinD%(a() As Double, start%, numEls%)
+    '  Return 0
+    'End Function
 
-    Public Shared Function MinI%(a() As Short, start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function MinI%(a() As Short, start%, numEls%)
+    '  Return 0
+    'End Function
 
-    Public Shared Function MinL%(a() As Integer, start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function MinL%(a() As Integer, start%, numEls%)
+    '  Return 0
+    'End Function
 
-    Public Shared Function MinS%(a() As Single, start%, numEls%)
-      Return 0
-    End Function
+    'Public Shared Function MinS%(a() As Single, start%, numEls%)
+    '  Return 0
+    'End Function
 
     'Public Shared Function MinC%(a() As Currency, start%, numEls%)
     '  Return 0
     'End Function
 
-    Public Shared Sub SearchT(a() As Object, start%, numEls%, match%, found%, dir%, code%, structSize%, memberDff%, memberSize%)
+    'Public Shared Sub SearchT(a() As Object, start%, numEls%, match%, found%, dir%, code%, structSize%, memberDff%, memberSize%)
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub SearchT2(a() As Object, start%, numEls%, match%, found%, dir%, code%, structSize%, memberDff%, memberSize%)
+    'Public Shared Sub SearchT2(a() As Object, start%, numEls%, match%, found%, dir%, code%, structSize%, memberDff%, memberSize%)
 
-    End Sub
+    'End Sub
 
     Public Shared Sub SetBit(ByRef array$, element%, bit%)
 
@@ -257,7 +259,8 @@ Namespace QP
 
       Dim index = (element \ 8)
 
-      If array.Length < index + 1 Then
+      If array Is Nothing OrElse
+         array.Length < index + 1 Then
         Return
       End If
 
@@ -266,7 +269,7 @@ Namespace QP
       Dim mask = 1 << (element Mod 8)
 
       If bit = 0 Then
-        v = v And mask
+        v = v And Not mask
       Else
         v = v Or mask
       End If
@@ -286,21 +289,21 @@ Namespace QP
 
     End Sub
 
-    Public Shared Function SortD%(a() As Double, start%, numEls%, dir%)
-      Return 0
-    End Function
+    'Public Shared Function SortD%(a() As Double, start%, numEls%, dir%)
+    '  Return 0
+    'End Function
 
-    Public Shared Function SortI%(a() As Short, start%, numEls%, dir%)
-      Return 0
-    End Function
+    'Public Shared Function SortI%(a() As Short, start%, numEls%, dir%)
+    '  Return 0
+    'End Function
 
-    Public Shared Function SortL%(a() As Integer, start%, numEls%, dir%)
-      Return 0
-    End Function
+    'Public Shared Function SortL%(a() As Integer, start%, numEls%, dir%)
+    '  Return 0
+    'End Function
 
-    Public Shared Function SortS%(a() As Single, start%, numEls%, dir%)
-      Return 0
-    End Function
+    'Public Shared Function SortS%(a() As Single, start%, numEls%, dir%)
+    '  Return 0
+    'End Function
 
     'Public Shared Function SortC%(a() As Currency, start%, numEls%, dir%)
     '  Return 0
@@ -366,6 +369,10 @@ Namespace QP
 
     Public Shared Sub SortT(ByRef arry$(), start%, numEls%, dir%, elSize%, memberOffset%, memberSize%)
 
+      If start <> 0 OrElse numEls <> 0 OrElse dir <> 0 OrElse elSize <> 0 OrElse memberOffset <> 0 OrElse memberSize <> 0 Then
+
+      End If
+
       ' SortT will sort all or part of a fixed-length string or TYPE array into either ascending or descending order. 
 
       Dim result = From p In arry Order By p Ascending
@@ -379,9 +386,28 @@ Namespace QP
 
     End Sub
 
-    Public Shared Sub SortT2(a() As Object, start%, numEls%, dir%, elSize%, memberOffset%, memberSize%)
+    'Public Shared Sub SortT2(a() As Object, start%, numEls%, dir%, elSize%, memberOffset%, memberSize%)
+
+    '  ' SortT2 is nearly identical, but when considering the string component of a TYPE array, sorting is performed without regard to capitalization. 
+
+    'End Sub
+
+    Public Shared Sub SortT2(ByRef a() As String, start%, NumE1s%, Dir%, E1Size%, Member0ffset%, MemberSize%)
+
+      If start <> 0 OrElse NumE1s <> 0 OrElse Dir <> 0 OrElse E1Size <> 0 OrElse Member0ffset <> 0 OrElse MemberSize <> 0 Then
+
+      End If
 
       ' SortT2 is nearly identical, but when considering the string component of a TYPE array, sorting is performed without regard to capitalization. 
+
+      Dim result = From p In a Order By p Ascending
+
+      ReDim a(result.Count)
+      Dim index = 1
+      For Each value In result.ToList
+        a(index) = value
+        index += 1
+      Next
 
     End Sub
 

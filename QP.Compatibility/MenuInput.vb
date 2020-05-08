@@ -2,7 +2,9 @@
 Option Strict On
 Option Infer On
 
-Namespace QP
+Imports QB.Console
+
+Namespace Global.QP
 
   Public NotInheritable Class MenuInput
 
@@ -58,9 +60,10 @@ Namespace QP
     End Sub
 
     Public Shared Function MGetKey%(ByRef row%, ByRef column%)
-      While QB.INKEY <> "" : End While
+      While INKEY() <> "" : End While
       Do
-        Dim A$ = QB.INKEY
+        Dim A$ = INKEY()
+
         If A$ <> "" Then
           If Len(A$) > 1 Then
             Return -Asc(A$(1))

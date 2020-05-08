@@ -112,5 +112,11 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\QB.Compatibility\QB.Compatibility\QB.Compatibility.vbproj">
+      <Project>{993dfa07-3e49-403c-b7f5-a1296399f874}</Project>
+      <Name>QB.Compatibility</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

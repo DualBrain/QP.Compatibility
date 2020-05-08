@@ -2,7 +2,7 @@
 Option Strict On
 Option Infer On
 
-Namespace QP
+Namespace Global.QP
 
   Public NotInheritable Class Ems
 
@@ -33,11 +33,27 @@ Namespace QP
       Return 0
     End Function
 
+    Public Shared Sub Array2Ems(array() As Long, start%, elSize%, numEls%, handle%)
+
+    End Sub
+
+    Public Shared Sub Array2Ems(array() As Integer, start%, elSize%, numEls%, handle%)
+
+    End Sub
+
     Public Shared Sub Array2Ems(array() As Object, start%, elSize%, numEls%, handle%)
 
     End Sub
 
     Public Shared Sub Array2Ems(segment%, address%, numBytes%, dumm%, handle%)
+
+    End Sub
+
+    Public Shared Sub Ems2Array(array() As Long, start%, elSize%, numEls%, handle%)
+
+    End Sub
+
+    Public Shared Sub Ems2Array(array() As Integer, start%, elSize%, numEls%, handle%)
 
     End Sub
 

@@ -2,7 +2,7 @@
 Option Strict On
 Option Infer On
 
-Namespace QP
+Namespace Global.QP
 
   Public NotInheritable Class Functions
 
@@ -42,7 +42,17 @@ Namespace QP
     End Function
 
     Public Shared Function Num2Bin$(number%)
-      Return Nothing
+
+      Dim result = ""
+      For index = 8 To 1 Step -1
+        If (number% And CInt(2 ^ (index - 1))) <> 0 Then
+          result &= "1"
+        Else
+          result &= "0"
+        End If
+      Next
+      Return result
+
     End Function
 
     Public Shared Function Num2Bin2$(number%)
@@ -53,7 +63,7 @@ Namespace QP
       Return Nothing
     End Function
 
-    Public Shared Sub Parse(work$, delim$, array$())
+    Public Shared Sub Parse(work$, deliMM$, array$())
 
     End Sub
 

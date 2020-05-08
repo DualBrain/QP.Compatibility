@@ -2,7 +2,7 @@
 Option Strict On
 Option Infer On
 
-Namespace QP
+Namespace Global.QP
 
   Public NotInheritable Class Dos
 
@@ -12,15 +12,15 @@ Namespace QP
     Public Shared Sub CDir(path As String)
       Try
         IO.Directory.SetCurrentDirectory(path)
-      Catch ex As io.IOException
+      Catch ex As IO.IOException
         'TODO: Depending on the error, need to set DOSError and/or WhichError.
       End Try
     End Sub
 
-    Public Shared Sub ClipFile(filename$, newLength&)
+    Public Shared Sub ClipFile(filename$, newLength%)
       'TODO: The following code needs to be tested/verified as to whether or not it actually works...
       Using fs = New IO.FileStream(filename$, IO.FileMode.Open)
-        fs.SetLength(newLength&)
+        fs.SetLength(newLength)
       End Using
     End Sub
 
@@ -245,6 +245,7 @@ Namespace QP
     End Structure
 
     Public Shared Sub FileInfo(fileName$, ByRef typeVar As FInfo)
+      If fileName Is Nothing Then Return
       Dim fi = New IO.FileInfo(fileName)
       typeVar.Year = fi.LastWriteTime.Year
       typeVar.Month = fi.LastWriteTime.Month
@@ -381,7 +382,9 @@ Namespace QP
     End Function
 
     Public Shared Function GetDir(drive As String) As String
-      Return IO.Path.GetFullPath(My.Application.Info.DirectoryPath).Substring(2)
+      Stop
+      Return Nothing
+      'Return IO.Path.GetFullPath(My.Application.Info.DirectoryPath).Substring(2)
     End Function
 
     Public Shared Function GetDisketteType%(driveNumber%)
@@ -389,7 +392,9 @@ Namespace QP
     End Function
 
     Public Shared Function GetDrive() As Integer
-      Return Asc(IO.Path.GetPathRoot(My.Application.Info.DirectoryPath).Substring(0, 1))
+      'Return Asc(IO.Path.GetPathRoot(My.Application.Info.DirectoryPath).Substring(0, 1))
+      Stop
+      Return Nothing
     End Function
 
     Public Shared Function GetVol$(drive$)
@@ -437,7 +442,7 @@ Namespace QP
       Return 0
     End Function
 
-    Public Shared Function LoadExec%(program$, cmdLine$)
+    Public Shared Function LoadExec%(prograMM$, cmdLine$)
       Return 0
     End Function
 
@@ -518,6 +523,31 @@ Namespace QP
 
     End Sub
 
+    Public Shared Sub ReadFileT(spec$, ByRef arry() As Object)
+
+      ' ReadFileT obtains a list of file names from disk, and loads them into a fixed-length string array in one operation.
+
+      Dim directory As String = spec
+      Dim pattern As String = Nothing
+      If (directory.Contains("*") OrElse directory.Contains("?")) Then
+        pattern = directory.Substring(directory.LastIndexOf("\") + 1)
+        If directory.Contains("\") Then
+          directory = directory.Substring(0, directory.LastIndexOf("\"))
+        Else
+          directory = "."
+        End If
+      End If
+
+      Dim result = IO.Directory.GetFiles(directory, pattern)
+      ReDim arry(result.Count)
+      Dim index = 1
+      For Each value In result
+        arry(index) = IO.Path.GetFileName(value).PadRight(12)
+        index += 1
+      Next
+
+    End Sub
+
     Public Shared Sub ReadFileT(spec$, ByRef arry$())
 
       ' ReadFileT obtains a list of file names from disk, and loads them into a fixed-length string array in one operation.
@@ -526,7 +556,11 @@ Namespace QP
       Dim pattern As String = Nothing
       If (directory.Contains("*") OrElse directory.Contains("?")) Then
         pattern = directory.Substring(directory.LastIndexOf("\") + 1)
-        directory = directory.Substring(0, directory.LastIndexOf("\"))
+        If directory.Contains("\") Then
+          directory = directory.Substring(0, directory.LastIndexOf("\"))
+        Else
+          directory = "."
+        End If
       End If
 
       Dim result = IO.Directory.GetFiles(directory, pattern)

@@ -2,7 +2,7 @@
 Option Strict On
 Option Infer On
 
-Namespace QP
+Namespace Global.QP
 
   Public NotInheritable Class Strings
 
@@ -192,11 +192,11 @@ Namespace QP
 
     End Function
 
-    Public Shared Function QPLTrim$(work$)
+    Public Shared Function QPLTriMM$(work$)
       Return Nothing
     End Function
 
-    Public Shared Function QPRTrim$(work$)
+    Public Shared Function QPRTriMM$(work$)
       Return Nothing
     End Function
 
@@ -212,7 +212,7 @@ Namespace QP
       Return CLng(Val(value$))
     End Function
 
-    Public Shared Sub RemCtrl(x$, replace$)
+    Public Shared Sub RemCtrl(x$, replAceNumber$)
 
     End Sub
 

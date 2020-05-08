@@ -3,7 +3,7 @@ Option Strict On
 Option Infer On
 Imports System.Runtime.InteropServices
 
-Namespace QP
+Namespace Global.QP
 
   Public NotInheritable Class KeyboardMouse
 
@@ -22,6 +22,10 @@ Namespace QP
     Private Shared Function GetStdHandle(nStdHandle As Integer) As IntPtr
     End Function
 
+
+#Disable Warning CA1034 ' Nested types should not be visible
+#Disable Warning CA1815 ' Override equals and operator equals on value types
+#Disable Warning CA1034 ' Nested types should not be visible
 
     <StructLayout(LayoutKind.Sequential)>
     Public Structure RECT
@@ -64,6 +68,18 @@ Namespace QP
       Public hCursor As IntPtr ' Handle to the cursor.
       Public ptScreenPos As POINT ' A POINT structure that receives the screen coordinates of the cursor.
     End Structure
+
+    Public Structure Area
+      Public ULRow As Integer
+      Public ULCol As Integer
+      Public LRRow As Integer
+      Public LRCol As Integer
+      Public [Alias] As Integer
+    End Structure
+
+#Enable Warning CA1034 ' Nested types should not be visible
+#Enable Warning CA1815 ' Override equals and operator equals on value types
+#Enable Warning CA1034 ' Nested types should not be visible
 
     Private Enum SystemMetric As Integer
       ''' <summary>
@@ -478,21 +494,21 @@ Namespace QP
       End If
     End Sub
 
-    Public Shared Function CapsLock%()
-      Return If(GetAsyncKeyState(&H14) <> 0, -1, 0)
+    Public Shared Function CapsLock() As Boolean
+      Return If(GetAsyncKeyState(&H14) <> 0, True, False)
     End Function
 
-    Public Shared Sub CapsOff()
+    'Public Shared Sub CapsOff()
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub CapsOn()
+    'Public Shared Sub CapsOn()
 
-    End Sub
+    'End Sub
 
-    Public Shared Sub ClearBuf()
+    'Public Shared Sub ClearBuf()
 
-    End Sub
+    'End Sub
 
     Public Shared Function CtrlKey%()
       Return If(GetAsyncKeyState(&H11) <> 0, -1, 0)
@@ -521,8 +537,8 @@ Namespace QP
       If x >= rct.Left AndAlso x <= rct.Right AndAlso
        y >= rct.Top AndAlso y <= rct.Bottom Then
 
-        x = x - rct.Left
-        y = y - rct.Top
+        x -= rct.Left
+        y -= rct.Top
 
         Dim lbutton = GetAsyncKeyState(&H1) <> 0
         Dim rbutton = GetAsyncKeyState(&H2) <> 0
@@ -580,15 +596,15 @@ Namespace QP
 
     End Sub
 
-    Public Shared Sub GrafCursor(x%, y%, cursor$)
+    'Public Shared Sub GrafCursor(x%, y%, cursor$)
 
-    End Sub
+    'End Sub
 
     Public Shared Sub HideCursor()
       Dim counter = ShowCursor(False)
     End Sub
 
-    Public Shared Sub InitMouse(there%)
+    Public Shared Sub InitMouse(ByRef there%)
 
       'NOTES: If mouse is present, set there to -1 otherwise set to 0 if no mouse is installed.
 
@@ -610,91 +626,90 @@ Namespace QP
 
     End Sub
 
-    Public Shared Function InStat%()
-      Return 0
-    End Function
+    'Public Shared Function InStat%()
+    '  Return 0
+    'End Function
 
-    Public Shared Sub Keyboard(row%, column%, color1%, color2%, mode%)
+    'Public Shared Sub Keyboard(row%, column%, color1%, color2%, mode%)
 
-    End Sub
+    'End Sub
 
-    Public Shared Function KeyDown%()
-      Return 0
-    End Function
+    'Public Shared Function KeyDown%()
+    '  Return 0
+    'End Function
 
-    Public Shared Sub Motion(value%)
+    'Public Shared Sub Motion(value%)
 
-    End Sub
+    'End Sub
 
     Public Shared Sub Mouse(ByRef ax%, ByRef bx%, ByRef cx%, ByRef dx%)
       ' Mouse provides access to all of the mouse services, and is the only way to use those that are not provided in a simplified form with QuickPak Professional.
       ' AX% is the number for the mouse service of interest, while BX%, CX%, and DX% assign and return the processor's registers. 
+      If ax <> 0 AndAlso bx <> 0 AndAlso cx <> 0 AndAlso dx <> 0 Then
+
+      End If
     End Sub
 
-    Public Structure Area
-      Public ULRow As Integer
-      Public ULCol As Integer
-      Public LRRow As Integer
-      Public LRCol As Integer
-      Public [Alias] As Integer
-    End Structure
+    'Public Shared Sub MouseRange(array() As Area, start%, numEls%, row%, col%, button%, rangeNum%)
 
-    Public Shared Sub MouseRange(array() As Area, start%, numEls%, row%, col%, button%, rangeNum%)
+    'End Sub
 
-    End Sub
+    'Public Shared Sub MouseRange1(array() As Area, start%, numEls%, row%, col%, button%, rangeNum%)
 
-    Public Shared Sub MouseRange1(array() As Area, start%, numEls%, row%, col%, button%, rangeNum%)
+    'End Sub
 
-    End Sub
+    'Public Shared Sub MouseRangeG(array() As Area, start%, numEls%, row%, col%, button%, rangeNum%)
 
-    Public Shared Sub MouseRangeG(array() As Area, start%, numEls%, row%, col%, button%, rangeNum%)
+    'End Sub
 
-    End Sub
+    'Public Shared Sub MouseRangeG1(array() As Area, start%, numEls%, row%, col%, button%, rangeNum%)
 
-    Public Shared Sub MouseRangeG1(array() As Area, start%, numEls%, row%, col%, button%, rangeNum%)
+    'End Sub
 
-    End Sub
+    'Public Shared Sub MouseState(buffer$)
 
-    Public Shared Sub MouseState(buffer$)
+    'End Sub
 
-    End Sub
+    'Public Shared Sub MouseTrap(ulRow%, ulCol%, lrRow%, lrCol%)
+    '  'MouseTrap will establish the allowable range of movement for the mouse cursor. 
+    '  ' ULRow% And ULCol % specify the upper left corner Of the range, And LRRow% And LRCol% indicate the bottom right boundary.
+    'End Sub
 
-    Public Shared Sub MouseTrap(ulRow%, ulCol%, lrRow%, lrCol%)
-      'MouseTrap will establish the allowable range of movement for the mouse cursor. 
-      ' ULRow% And ULCol % specify the upper left corner Of the range, And LRRow% And LRCol% indicate the bottom right boundary.
-    End Sub
+    'Public Shared Function NumLock%()
+    '  Return 0
+    'End Function
 
-    Public Shared Function NumLock%()
-      Return 0
-    End Function
+    'Public Shared Sub NumOff()
 
-    Public Shared Sub NumOff()
+    'End Sub
 
-    End Sub
+    'Public Shared Sub NumOn()
 
-    Public Shared Sub NumOn()
+    'End Sub
 
-    End Sub
+    'Public Shared Function PeekBuf%()
+    '  Return 0
+    'End Function
 
-    Public Shared Function PeekBuf%()
-      Return 0
-    End Function
+    'Public Shared Sub RptKey(char%, count%)
 
-    Public Shared Sub RptKey(char%, count%)
+    'End Sub
 
-    End Sub
-
-    Public Shared Function ScrlLock%()
-      Return If(GetAsyncKeyState(&H91) <> 0, -1, 0)
+    Public Shared Function ScrlLock() As Boolean
+      Return If(GetAsyncKeyState(&H91) <> 0, True, False)
     End Function
 
     Public Shared Sub SetCursor(x%, y%)
+      If x <> 0 AndAlso y <> 0 Then
+
+      End If
       ' SetCursor provides a simple way to set a New location for the mouse cursor. 
       ' X% And Y% represent the New horizontal And vertical positions respectively
+      Throw New NotImplementedException
     End Sub
 
-    Public Shared Function ShiftKey%()
-      Return If(GetAsyncKeyState(&H10) <> 0, -1, 0)
+    Public Shared Function ShiftKey() As Boolean
+      Return If(GetAsyncKeyState(&H10) <> 0, True, False)
     End Function
 
     Public Shared Sub ShowCursor()
@@ -732,25 +747,25 @@ Namespace QP
 
     End Sub
 
-    Public Shared Sub TextCursor(FG%, BG%)
+    'Public Shared Sub TextCursor(FG%, BG%)
 
-      ' TextCursor provides an easy way to initialize the mouse cursor in text mode, and define its color. 
-      ' Call TextCursor(FG%, BG%)
-      ' PG% And BG% indicate the colors to be used
+    '  ' TextCursor provides an easy way to initialize the mouse cursor in text mode, and define its color. 
+    '  ' Call TextCursor(FG%, BG%)
+    '  ' PG% And BG% indicate the colors to be used
 
-    End Sub
+    'End Sub
 
-    Public Shared Function WaitKey%()
-      Return 0
-    End Function
+    'Public Shared Function WaitKey%()
+    '  Return 0
+    'End Function
 
-    Public Shared Function WaitScan%()
-      Return 0
-    End Function
+    'Public Shared Function WaitScan%()
+    '  Return 0
+    'End Function
 
-    Public Shared Sub WaitUp()
+    'Public Shared Sub WaitUp()
 
-    End Sub
+    'End Sub
 
   End Class
 

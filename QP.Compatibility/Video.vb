@@ -2,9 +2,12 @@
 Option Strict On
 Option Infer On
 
+Imports QB.Core
+Imports QB.Video
+
 Imports System.Runtime.InteropServices
 
-Namespace QP
+Namespace Global.QP
 
   Public NotInheritable Class Video
 
@@ -68,35 +71,35 @@ Namespace QP
       Dim C3$
       Select Case char%
         Case 1
-          C1$ = QB.QBChr(218) + QB.QBChr(196) + QB.QBChr(191)
-          C2$ = QB.QBChr(179) + QB.QBChr(32) + QB.QBChr(179)
-          C3$ = QB.QBChr(192) + QB.QBChr(196) + QB.QBChr(217)
+          C1$ = QBChr(218) + QBChr(196) + QBChr(191)
+          C2$ = QBChr(179) + QBChr(32) + QBChr(179)
+          C3$ = QBChr(192) + QBChr(196) + QBChr(217)
         Case 2
-          C1$ = QB.QBChr(201) + QB.QBChr(205) + QB.QBChr(187)
-          C2$ = QB.QBChr(186) + QB.QBChr(32) + QB.QBChr(186)
-          C3$ = QB.QBChr(200) + QB.QBChr(205) + QB.QBChr(188)
+          C1$ = QBChr(201) + QBChr(205) + QBChr(187)
+          C2$ = QBChr(186) + QBChr(32) + QBChr(186)
+          C3$ = QBChr(200) + QBChr(205) + QBChr(188)
         Case 3
-          C1$ = QB.QBChr(213) + QB.QBChr(205) + QB.QBChr(184)
-          C2$ = QB.QBChr(179) + QB.QBChr(32) + QB.QBChr(179)
-          C3$ = QB.QBChr(212) + QB.QBChr(205) + QB.QBChr(190)
+          C1$ = QBChr(213) + QBChr(205) + QBChr(184)
+          C2$ = QBChr(179) + QBChr(32) + QBChr(179)
+          C3$ = QBChr(212) + QBChr(205) + QBChr(190)
         Case 4
-          C1$ = QB.QBChr(214) + QB.QBChr(196) + QB.QBChr(183)
-          C2$ = QB.QBChr(186) + QB.QBChr(32) + QB.QBChr(186)
-          C3$ = QB.QBChr(211) + QB.QBChr(196) + QB.QBChr(189)
+          C1$ = QBChr(214) + QBChr(196) + QBChr(183)
+          C2$ = QBChr(186) + QBChr(32) + QBChr(186)
+          C3$ = QBChr(211) + QBChr(196) + QBChr(189)
         Case Else
-          C1$ = QB.QBString(3, char%)
+          C1$ = QBString(3, char%)
           C2$ = C1$
           C3$ = C1$
       End Select
       Dim W = lrCol - ulCol
       Dim H = lrRow - ulRow
-      Call QPrintRC(Left(C1$, 1) + QB.QBString(W - 1, Mid(C1$, 2, 1)) + Right(C1$, 1), ulRow, ulCol, colr)
+      Call QPrintRC(Left(C1$, 1) + QBString(W - 1, Mid(C1$, 2, 1)) + Right(C1$, 1), ulRow, ulCol, colr)
       For X = 1 To H
         Call QPrintRC(Left(C2$, 1), ulRow + X, ulCol, colr)
         Call QPrintRC(Right(C2$, 1), ulRow + X, lrCol, colr)
       Next
 
-      Call QPrintRC(Left(C3$, 1) + QB.QBString(W - 1, Mid(C3$, 2, 1)) + Right(C3$, 1), lrRow, ulCol, colr)
+      Call QPrintRC(Left(C3$, 1) + QBString(W - 1, Mid(C3$, 2, 1)) + Right(C3$, 1), lrRow, ulCol, colr)
 
     End Sub
 
@@ -182,9 +185,13 @@ Namespace QP
 
       For c = ulCol To lrCol
         For r = ulRow To lrRow
-          Dim s = QB.SCREEN(r, c)
+          Dim s = SCREEN(r, c)
           REM QB.LOCATE(R, C) : QB.PRINT(QB.QBChr(S), True)
-          QPrintRC(QB.QBChr(S), r, c, colr)
+          If s = 0 Then
+            QPrintRC(" ", r, c, colr)
+          Else
+            QPrintRC(QBChr(s), r, c, colr)
+          End If
         Next
       Next
 
