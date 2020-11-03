@@ -272,7 +272,7 @@ Namespace Global.QP
     'End Sub
 
     Public Shared Function PDQTimer&()
-      Return QBTimer()
+      Return CLng(QBTimer())
     End Function
 
     'Public Shared Function Peek1%(segment%, address%)

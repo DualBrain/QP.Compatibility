@@ -8,11 +8,12 @@
     <OutputType>Library</OutputType>
     <RootNamespace>
     </RootNamespace>
-    <AssemblyName>ShinyStone.QP</AssemblyName>
+    <AssemblyName>SSDD.QP</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,7 +21,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>ShinyStone.QP.xml</DocumentationFile>
+    <DocumentationFile>SSDD.QP.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -29,7 +30,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>ShinyStone.QP.xml</DocumentationFile>
+    <DocumentationFile>SSDD.QP.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -45,15 +46,6 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
-  <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
@@ -65,6 +57,33 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\QB.Compatibility\QB.Compatibility\Console.vb">
+      <Link>QB.Compatibility\Console.vb</Link>
+    </Compile>
+    <Compile Include="..\..\QB.Compatibility\QB.Compatibility\ConsoleEx.vb">
+      <Link>QB.Compatibility\ConsoleEx.vb</Link>
+    </Compile>
+    <Compile Include="..\..\QB.Compatibility\QB.Compatibility\Core.vb">
+      <Link>QB.Compatibility\Core.vb</Link>
+    </Compile>
+    <Compile Include="..\..\QB.Compatibility\QB.Compatibility\Development.vb">
+      <Link>QB.Compatibility\Development.vb</Link>
+    </Compile>
+    <Compile Include="..\..\QB.Compatibility\QB.Compatibility\Devices.vb">
+      <Link>QB.Compatibility\Devices.vb</Link>
+    </Compile>
+    <Compile Include="..\..\QB.Compatibility\QB.Compatibility\Extensions.vb">
+      <Link>QB.Compatibility\Extensions.vb</Link>
+    </Compile>
+    <Compile Include="..\..\QB.Compatibility\QB.Compatibility\File.vb">
+      <Link>QB.Compatibility\File.vb</Link>
+    </Compile>
+    <Compile Include="..\..\QB.Compatibility\QB.Compatibility\Multimedia.vb">
+      <Link>QB.Compatibility\Multimedia.vb</Link>
+    </Compile>
+    <Compile Include="..\..\QB.Compatibility\QB.Compatibility\Video.vb">
+      <Link>QB.Compatibility\Video.vb</Link>
+    </Compile>
     <Compile Include="Array.vb" />
     <Compile Include="Dos.vb" />
     <Compile Include="Ems.vb" />
@@ -78,6 +97,7 @@
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -113,10 +133,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\QB.Compatibility\QB.Compatibility\QB.Compatibility.vbproj">
-      <Project>{993dfa07-3e49-403c-b7f5-a1296399f874}</Project>
-      <Name>QB.Compatibility</Name>
-    </ProjectReference>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
