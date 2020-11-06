@@ -272,7 +272,7 @@ Namespace Global.QP
     'End Sub
 
     Public Shared Function PDQTimer&()
-      Return QBTimer()
+      Return CLng(QBTimer())
     End Function
 
     'Public Shared Function Peek1%(segment%, address%)
@@ -435,14 +435,12 @@ Namespace Global.QP
       If value Is Nothing Then
         Return 0
       Else
-        Dim d = New Date(1, 1, 1, CDate(value).Hour, CDate(value).Minute, CDate(value).Second)
-        Return CInt(DateDiff(DateInterval.Second, Date.MinValue, d))
+        Return CInt(DateDiff(DateInterval.Second, Date.MinValue, New Date(1, 1, 1, CDate(value).Hour, CDate(value).Minute, CDate(value).Second)))
       End If
     End Function
 
     Public Shared Function Time2Num%(t$)
-      Dim d = CDate(t$)
-      Return CInt(DateDiff(DateInterval.Second, Date.MinValue, d))
+      Return CInt(DateDiff(DateInterval.Second, Date.MinValue, CDate(t$)))
     End Function
 
     'Public Shared Function Times2%(number%)

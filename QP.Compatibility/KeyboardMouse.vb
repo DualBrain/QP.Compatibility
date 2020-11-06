@@ -495,7 +495,7 @@ Namespace Global.QP
     End Sub
 
     Public Shared Function CapsLock() As Boolean
-      Return If(GetAsyncKeyState(&H14) <> 0, True, False)
+      Return GetAsyncKeyState(&H14) <> 0
     End Function
 
     'Public Shared Sub CapsOff()
@@ -600,9 +600,9 @@ Namespace Global.QP
 
     'End Sub
 
-    Public Shared Sub HideCursor()
-      Dim counter = ShowCursor(False)
-    End Sub
+    'Public Shared Sub HideCursor()
+    '  Dim counter = ShowCursor(False)
+    'End Sub
 
     Public Shared Sub InitMouse(ByRef there%)
 
@@ -696,7 +696,7 @@ Namespace Global.QP
     'End Sub
 
     Public Shared Function ScrlLock() As Boolean
-      Return If(GetAsyncKeyState(&H91) <> 0, True, False)
+      Return GetAsyncKeyState(&H91) <> 0
     End Function
 
     Public Shared Sub SetCursor(x%, y%)
@@ -709,12 +709,12 @@ Namespace Global.QP
     End Sub
 
     Public Shared Function ShiftKey() As Boolean
-      Return If(GetAsyncKeyState(&H10) <> 0, True, False)
+      Return GetAsyncKeyState(&H10) <> 0
     End Function
 
-    Public Shared Sub ShowCursor()
-      Dim counter = ShowCursor(True)
-    End Sub
+    'Public Shared Sub ShowCursor()
+    '  Dim counter = ShowCursor(True)
+    'End Sub
 
     Public Shared Sub StuffBuf(x$)
 

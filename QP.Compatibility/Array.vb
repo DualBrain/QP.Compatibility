@@ -98,7 +98,7 @@ Namespace Global.QP
         Stop
       End If
 
-      Dim v = Asc(array(index))
+      Dim v = AscW(array(index))
 
       Dim mask = 1 << (element Mod 8)
       Return CInt((v And mask) <> 0)
@@ -264,7 +264,7 @@ Namespace Global.QP
         Return
       End If
 
-      Dim v = Asc(array(index))
+      Dim v = AscW(array(index))
 
       Dim mask = 1 << (element Mod 8)
 
@@ -285,7 +285,7 @@ Namespace Global.QP
         r = array.Substring(index + 1)
       End If
 
-      array = l & Chr(v) & r
+      array = l & ChrW(v) & r
 
     End Sub
 
@@ -369,20 +369,21 @@ Namespace Global.QP
 
     Public Shared Sub SortT(ByRef arry$(), start%, numEls%, dir%, elSize%, memberOffset%, memberSize%)
 
-      If start <> 0 OrElse numEls <> 0 OrElse dir <> 0 OrElse elSize <> 0 OrElse memberOffset <> 0 OrElse memberSize <> 0 Then
+      If start <> 0 OrElse numEls <> 0 OrElse elSize <> 0 OrElse memberOffset <> 0 OrElse memberSize <> 0 Then
 
       End If
 
       ' SortT will sort all or part of a fixed-length string or TYPE array into either ascending or descending order. 
 
-      Dim result = From p In arry Order By p Ascending
-
-      ReDim arry(result.Count - 1)
-      Dim index = 0 '1
-      For Each value In result.ToList
-        arry(index) = value
-        index += 1
-      Next
+      Dim values = arry.ToList
+      values.RemoveAt(0)
+      If dir = 0 Then
+        values = (From p In arry Order By p Ascending).ToList
+      Else
+        values = (From p In values Order By p Descending).ToList
+      End If
+      values.Insert(0, "")
+      arry = values.ToArray
 
     End Sub
 
