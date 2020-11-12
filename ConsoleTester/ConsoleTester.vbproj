@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<RootNamespace>ConsoleTester</RootNamespace>
+		<TargetFramework>net5.0-windows</TargetFramework>
+		<UseWindowsForms>True</UseWindowsForms>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\QP.Compatibility\QP.Compatibility.vbproj" />
+	</ItemGroup>
+
+</Project>
